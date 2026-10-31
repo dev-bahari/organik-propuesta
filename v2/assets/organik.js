@@ -95,6 +95,7 @@ const SPRITE=`<svg width="0" height="0" style="position:absolute" aria-hidden="t
 <symbol id="i-phone" viewBox="0 0 24 24"><path d="M6 3h3l1.5 4-2 1.5a11 11 0 0 0 5 5l1.5-2 4 1.5v3a2 2 0 0 1-2 2A16 16 0 0 1 4 5a2 2 0 0 1 2-2Z"/></symbol>
 <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></symbol>
 <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+<symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/></symbol>
 <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 3s6 6.5 6 11a6 6 0 0 1-12 0c0-4.5 6-11 6-11Z"/></symbol>
 <symbol id="i-ruler" viewBox="0 0 24 24"><path d="M4 16 16 4l4 4L8 20z"/><path d="m8 12 2 2M11 9l2 2M14 6l2 2"/></symbol>
 <symbol id="i-insta" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r=".6" fill="currentColor"/></symbol>
@@ -113,6 +114,7 @@ function shell(active){
   <a class="brand" href="index.html" aria-label="Vivero Organik, inicio"><img src="${LOGO}" alt="" width="52" height="52"><span>Vivero Organik<small>CARTAGENA · SINCELEJO</small></span></a>
   <nav class="main" aria-label="Principal">${NAV.map(([k,n,h])=>`<a href="${h}"${cur(k)}>${n}</a>`).join("")}</nav>
   <div class="hicons">
+    <button class="icon-btn" id="themeBtn" type="button"><svg class="i" aria-hidden="true"><use href="#i-moon"/></svg></button>
     <button class="icon-btn" id="openSearch" aria-label="Buscar" aria-expanded="false" aria-controls="searchBar">${icon("search")}</button>
     <button class="icon-btn hide-s" aria-label="Mi cuenta">${icon("user")}</button>
     <button class="icon-btn" id="openCart" aria-label="Abrir carrito">${icon("bag")}<span class="badge" id="cartCount">0</span></button>
@@ -206,6 +208,12 @@ function wire(){
   const sb=$("#searchBar"),sbtn=$("#openSearch");
   sbtn.onclick=()=>{sb.hidden=!sb.hidden;sbtn.setAttribute("aria-expanded",!sb.hidden);if(!sb.hidden)$("#q").focus()};
   document.addEventListener("keydown",e=>{if(e.key==="Escape"){closeCart();closeMenu();if(!sb.hidden){sb.hidden=true;sbtn.setAttribute("aria-expanded","false");sbtn.focus()}}});
+  /* theme toggle: starts from the system, remembers the visitor's choice */
+  const root=document.documentElement,mq=matchMedia("(prefers-color-scheme: dark)"),tb=$("#themeBtn");
+  const isDark=()=>root.dataset.theme?root.dataset.theme==="dark":mq.matches;
+  const paintBtn=()=>{const d=isDark();tb.innerHTML=icon(d?"sun":"moon");tb.setAttribute("aria-label",d?"Cambiar a modo claro":"Cambiar a modo oscuro")};
+  tb.onclick=()=>{const next=isDark()?"light":"dark";root.dataset.theme=next;try{localStorage.setItem("organik-theme",next)}catch(e){}paintBtn()};
+  mq.addEventListener("change",paintBtn);paintBtn();
   $("#news").addEventListener("submit",e=>{e.preventDefault();const v=$("#email").value.trim();
     $("#newsMsg").textContent=/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)?"Listo, ya eres parte del Club Organik.":"Escribe un correo válido, por ejemplo nombre@correo.com"});
   renderCart();
