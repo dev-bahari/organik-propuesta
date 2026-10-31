@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Catálogo · Vivero Organik</title>
+<meta name="description" content="Compra plantas de interior y exterior, macetas, abono y tierra negra con envío en Cartagena y Sincelejo.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/organik.css">
+</head>
+<body>
+<main id="main">
+  <section class="band" aria-labelledby="h-page">
+    <img id="bandImg" src="../img/calathea2.jpg" alt="" width="800" height="1000">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Migas de pan"><ol><li><a href="index.html">Inicio</a></li><li><a href="catalogo.html">Catálogo</a></li><li id="crumbCur" aria-current="page" hidden></li></ol></nav>
+      <h1 class="h-display" id="h-page">Catálogo</h1>
+      <p id="bandLead">Plantas, macetas, abono y tierra con envío en Cartagena y Sincelejo.</p>
+    </div>
+  </section>
+
+  <div class="wrap shop">
+    <aside class="filters" id="filters" aria-label="Filtros">
+      <div class="filters-head"><h2 class="h-display">Filtros</h2><button class="icon-btn" id="closeFilters" aria-label="Cerrar filtros"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button></div>
+      <div class="fgroup"><h2>Categorías <button type="button" data-clear="c" hidden>Borrar</button></h2><ul class="opts" id="fCats"></ul></div>
+      <div class="fgroup"><h2>Luz del lugar <button type="button" data-clear="luz" hidden>Borrar</button></h2><ul class="opts" id="fLuz"></ul></div>
+      <div class="fgroup"><h2>Disponibilidad <button type="button" data-clear="stock" hidden>Borrar</button></h2><ul class="opts" id="fStock"></ul></div>
+      <div class="fgroup"><h2>Precio <button type="button" data-clear="price" hidden>Borrar</button></h2>
+        <div class="prices">
+          <label for="pmin">Desde<input id="pmin" type="number" inputmode="numeric" min="0" step="1000" placeholder="$0"></label>
+          <label for="pmax">Hasta<input id="pmax" type="number" inputmode="numeric" min="0" step="1000" placeholder="$650.000"></label>
+        </div>
+        <p class="price-hint" id="priceHint"></p>
+      </div>
+      <div class="fgroup"><h2>En oferta</h2><div class="specials" id="specials"></div>
+        <a class="promo" href="alquiler.html"><img src="../img/oficina.jpg" alt="" loading="lazy" width="800" height="533"><b>Alquiler de plantas</b><span>Para eventos, hoteles y oficinas</span><span class="btn btn-oro">Cotizar</span></a>
+      </div>
+      <button class="btn btn-oro apply" id="applyFilters" type="button">Ver productos</button>
+    </aside>
+
+    <section aria-labelledby="h-results">
+      <div class="toolbar">
+        <h2 id="h-results" aria-live="polite">Catálogo <span>(0)</span></h2>
+        <div class="tb-r">
+          <button class="btn btn-ghost filter-open" id="openFilters" type="button" aria-controls="filters"><svg class="i" aria-hidden="true"><use href="#i-filter"/></svg>Filtros</button>
+          <div class="views" role="group" aria-label="Vista">
+            <button type="button" data-view="grid" aria-pressed="true" aria-label="Ver en cuadrícula"><svg class="i" aria-hidden="true"><use href="#i-grid"/></svg></button>
+            <button type="button" data-view="list" aria-pressed="false" aria-label="Ver en lista"><svg class="i" aria-hidden="true"><use href="#i-list"/></svg></button>
+          </div>
+          <label class="sort" for="sort"><span>Ordenar por</span>
+            <select id="sort">
+              <option value="best">Lo más vendido</option>
+              <option value="new">Destacados</option>
+              <option value="az">Alfabéticamente, A-Z</option>
+              <option value="za">Alfabéticamente, Z-A</option>
+              <option value="pasc">Precio, menor a mayor</option>
+              <option value="pdesc">Precio, mayor a menor</option>
+            </select>
+          </label>
+        </div>
+      </div>
+      <div class="chips" id="chips"></div>
+      <div class="grid" id="results"></div>
+      <nav class="pager" id="pager" aria-label="Paginación"></nav>
+    </section>
+  </div>
+</main>
+<script src="assets/organik.js"></script>
+<script>
+(function(){
+const GROUP={plantas:"Plantas",macetas:"Macetas",abono:"Abono y tierra"};
+const BAND={plantas:["calathea2","Plantas de interior, exterior, suculentas y de flor, elegidas para el clima de la costa."],macetas:["macetas","Macetas de cerámica, colgantes y repisas para darle casa a tus plantas."],abono:["tierra","Abono orgánico, humus, sustratos y tierra negra por bulto o por volqueta."]};
+const qs=new URLSearchParams(location.search);
+const g=qs.get("g")||"";
+O.shell(GROUP[g]?g:"plantas");
+const {P,CATS,LUZ,$,$$,card,fmt,byId,IMG}=O;
+const PER=12;
+const S={
+  c:new Set(qs.get("c")?qs.get("c").split(","):CATS.filter(x=>x.group===g).map(x=>x.id)),
+  luz:new Set(qs.get("luz")?qs.get("luz").split(","):[]),
+  stock:new Set(qs.get("stock")?qs.get("stock").split(","):[]),
+  min:+qs.get("min")||0,max:+qs.get("max")||0,
+  q:(qs.get("q")||"").trim(),sort:qs.get("sort")||"best",page:+qs.get("page")||1,view:qs.get("view")||"grid"
+};
+
+/* page heading */
+const title=S.q?`Resultados para “${S.q}”`:GROUP[g]||"Catálogo";
+document.title=(S.q?"Buscar":title)+" · Vivero Organik";
+$("#h-page").textContent=title;
+if(GROUP[g]||S.q){$("#crumbCur").hidden=false;$("#crumbCur").textContent=S.q?"Búsqueda":GROUP[g]}
+if(BAND[g]){$("#bandImg").src=IMG+BAND[g][0]+".jpg";$("#bandLead").textContent=BAND[g][1]}
+if(S.q)$("#bandLead").textContent="Mostramos los productos que coinciden con tu búsqueda.";
+
+const norm=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase();
+function match(x,skip){
+  if(S.q&&!norm(x.n+" "+x.d+" "+O.catName(x.c)).includes(norm(S.q)))return false;
+  if(skip!=="c"&&S.c.size&&!S.c.has(x.c))return false;
+  if(skip!=="luz"&&S.luz.size&&!x.t.some(t=>S.luz.has(t)))return false;
+  if(skip!=="stock"&&S.stock.size){const st=x.out?"out":"in";if(!S.stock.has(st))return false}
+  if(skip!=="price"&&S.min&&x.p<S.min)return false;
+  if(skip!=="price"&&S.max&&x.p>S.max)return false;
+  return true;
+}
+function opt(name,val,label,n,on){
+  return `<li><label class="opt${n?"":" zero"}"><input type="checkbox" name="${name}" value="${val}"${on?" checked":""}>${label}<span class="n">(${n})</span></label></li>`;
+}
+function renderFilters(){
+  $("#fCats").innerHTML=CATS.map(c=>opt("c",c.id,c.n,P.filter(x=>x.c===c.id&&match(x,"c")).length,S.c.has(c.id))).join("");
+  $("#fLuz").innerHTML=Object.entries(LUZ).map(([k,n])=>opt("luz",k,n,P.filter(x=>x.t.includes(k)&&match(x,"luz")).length,S.luz.has(k))).join("");
+  $("#fStock").innerHTML=opt("stock","in","En existencia",P.filter(x=>!x.out&&match(x,"stock")).length,S.stock.has("in"))+opt("stock","out","Agotado",P.filter(x=>x.out&&match(x,"stock")).length,S.stock.has("out"));
+  const ps=P.filter(x=>match(x,"price")).map(x=>x.p);
+  $("#priceHint").textContent=ps.length?`Precios entre ${fmt(Math.min(...ps))} y ${fmt(Math.max(...ps))}`:"";
+  $("[data-clear=c]").hidden=!S.c.size;$("[data-clear=luz]").hidden=!S.luz.size;$("[data-clear=stock]").hidden=!S.stock.size;$("[data-clear=price]").hidden=!(S.min||S.max);
+}
+const SORTS={best:(a,b)=>b.best-a.best,new:(a,b)=>(b.w?1:0)-(a.w?1:0)||b.best-a.best,az:(a,b)=>a.n.localeCompare(b.n,"es"),za:(a,b)=>b.n.localeCompare(a.n,"es"),pasc:(a,b)=>a.p-b.p,pdesc:(a,b)=>b.p-a.p};
+function chips(){
+  const c=[];
+  if(S.q)c.push(["q","",`Búsqueda: ${S.q}`]);
+  const isGroupDefault=g&&[...S.c].sort().join(",")===CATS.filter(x=>x.group===g).map(x=>x.id).sort().join(",");
+  if(!isGroupDefault)S.c.forEach(v=>c.push(["c",v,O.catName(v)]));
+  S.luz.forEach(v=>c.push(["luz",v,LUZ[v]]));
+  S.stock.forEach(v=>c.push(["stock",v,v==="in"?"En existencia":"Agotado"]));
+  if(S.min||S.max)c.push(["price","",`${S.min?fmt(S.min):"$0"} – ${S.max?fmt(S.max):"sin tope"}`]);
+  $("#chips").innerHTML=c.map(([k,v,l])=>`<span class="chip">${l}<button type="button" data-chip="${k}" data-v="${v}" aria-label="Quitar filtro ${l}"><svg class="i" aria-hidden="true"><use href="#i-x"/></svg></button></span>`).join("")+(c.length>1?`<button class="clear" type="button" data-clearall>Limpiar todo</button>`:"");
+}
+function syncURL(){
+  const u=new URLSearchParams();
+  if(g)u.set("g",g);
+  const groupCats=CATS.filter(x=>x.group===g).map(x=>x.id).sort().join(",");
+  const cur=[...S.c].sort().join(",");
+  if(cur&&cur!==groupCats)u.set("c",cur);
+  if(S.luz.size)u.set("luz",[...S.luz].join(","));
+  if(S.stock.size)u.set("stock",[...S.stock].join(","));
+  if(S.min)u.set("min",S.min);if(S.max)u.set("max",S.max);
+  if(S.q)u.set("q",S.q);if(S.sort!=="best")u.set("sort",S.sort);if(S.page>1)u.set("page",S.page);if(S.view!=="grid")u.set("view",S.view);
+  try{history.replaceState(null,"",location.pathname+(u.toString()?"?"+u:""))}catch(e){}
+}
+function render(scroll){
+  const list=P.filter(x=>match(x)).sort(SORTS[S.sort]||SORTS.best);
+  const pages=Math.max(1,Math.ceil(list.length/PER));
+  if(S.page>pages)S.page=pages;
+  const slice=list.slice((S.page-1)*PER,S.page*PER);
+  $("#h-results").innerHTML=`${S.q?"Resultados":GROUP[g]||"Catálogo"} <span>(${list.length})</span>`;
+  $("#applyFilters").textContent=`Ver ${list.length} ${list.length===1?"producto":"productos"}`;
+  const grid=$("#results");
+  grid.classList.toggle("list",S.view==="list");
+  grid.innerHTML=slice.length?slice.map(card).join(""):`<div class="empty-r"><svg class="i" aria-hidden="true"><use href="#i-leaf"/></svg><b>No encontramos productos</b><p>Prueba quitando algún filtro o buscando con otra palabra.</p><button class="btn btn-dark" type="button" data-clearall>Quitar filtros</button></div>`;
+  const pg=$("#pager");
+  if(pages<2){pg.innerHTML=""}else{
+    let h=`<button type="button" data-page="${S.page-1}" aria-label="Página anterior"${S.page===1?" disabled":""}><svg class="i" aria-hidden="true"><use href="#i-left"/></svg></button>`;
+    for(let i=1;i<=pages;i++)h+=`<button type="button" data-page="${i}"${i===S.page?' aria-current="page"':""} aria-label="Página ${i}">${i}</button>`;
+    h+=`<button type="button" data-page="${S.page+1}" aria-label="Página siguiente"${S.page===pages?" disabled":""}><svg class="i" aria-hidden="true"><use href="#i-right"/></svg></button>`;
+    pg.innerHTML=h;
+  }
+  $$("[data-view]").forEach(b=>b.setAttribute("aria-pressed",b.dataset.view===S.view));
+  $("#sort").value=S.sort;
+  renderFilters();chips();syncURL();
+  if(scroll){const t=$(".toolbar").getBoundingClientRect().top+scrollY-100;if(scrollY>t)scrollTo({top:t,behavior:"smooth"})}
+}
+$("#specials").innerHTML=P.filter(x=>x.w&&!x.out).slice(0,3).map(x=>`<a class="mini" href="producto.html?id=${x.id}"><img src="${IMG}${x.a}.jpg" alt="" loading="lazy" width="72" height="72"><span><b>${x.n}</b><span class="price">${fmt(x.p)}</span></span></a>`).join("");
+if(S.min)$("#pmin").value=S.min;if(S.max)$("#pmax").value=S.max;
+
+$("#filters").addEventListener("change",e=>{
+  const el=e.target;
+  if(el.type==="checkbox"){S[el.name][el.checked?"add":"delete"](el.value);S.page=1;render(true)}
+});
+let pt;
+["#pmin","#pmax"].forEach(s=>$(s).addEventListener("input",()=>{clearTimeout(pt);pt=setTimeout(()=>{S.min=+$("#pmin").value||0;S.max=+$("#pmax").value||0;S.page=1;render()},450)}));
+$("#sort").addEventListener("change",e=>{S.sort=e.target.value;S.page=1;render()});
+document.addEventListener("click",e=>{
+  const v=e.target.closest("[data-view]");if(v){S.view=v.dataset.view;render();return}
+  const p=e.target.closest("[data-page]");if(p&&!p.disabled){S.page=+p.dataset.page;render(true);return}
+  const cl=e.target.closest("[data-clear]");if(cl){const k=cl.dataset.clear;if(k==="price"){S.min=S.max=0;$("#pmin").value=$("#pmax").value=""}else S[k].clear();S.page=1;render();return}
+  const ch=e.target.closest("[data-chip]");if(ch){const k=ch.dataset.chip;if(k==="q")S.q="";else if(k==="price"){S.min=S.max=0;$("#pmin").value=$("#pmax").value=""}else S[k].delete(ch.dataset.v);S.page=1;render();return}
+  if(e.target.closest("[data-clearall]")){S.c.clear();S.luz.clear();S.stock.clear();S.min=S.max=0;S.q="";$("#pmin").value=$("#pmax").value="";S.page=1;render()}
+});
+/* mobile filter drawer */
+const F=$("#filters"),scrim=$("#scrim");let back;
+const openF=()=>{back=document.activeElement;F.classList.add("on");scrim.classList.add("on");setTimeout(()=>$("#closeFilters").focus(),50)};
+const closeF=()=>{if(!F.classList.contains("on"))return;F.classList.remove("on");scrim.classList.remove("on");back&&back.focus()};
+$("#openFilters").onclick=openF;$("#closeFilters").onclick=closeF;$("#applyFilters").onclick=closeF;
+scrim.addEventListener("click",closeF);document.addEventListener("keydown",e=>{if(e.key==="Escape")closeF()});
+render();
+})();
+</script>
+</body>
+</html>

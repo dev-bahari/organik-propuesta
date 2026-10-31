@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Alquiler de plantas · Vivero Organik</title>
+<meta name="description" content="Alquiler de plantas para eventos, hoteles, restaurantes y oficinas en Cartagena y Sincelejo.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/organik.css">
+</head>
+<body>
+<main id="main">
+  <section class="band" aria-labelledby="h-page">
+    <img src="../img/oficina.jpg" alt="" width="800" height="533">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Migas de pan"><ol><li><a href="index.html">Inicio</a></li><li aria-current="page">Alquiler de plantas</li></ol></nav>
+      <h1 class="h-display" id="h-page">Alquiler de plantas</h1>
+      <p>Llevamos, instalamos y mantenemos las plantas de tu evento, hotel u oficina. Tú solo disfrutas el espacio.</p>
+      <div><a class="btn btn-oro" href="#cotizar">Cotizar ahora <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+    </div>
+  </section>
+
+  <section class="blk" aria-labelledby="h-uses"><div class="wrap">
+    <div class="sec-head"><div><h2 class="h-display" id="h-uses">Para cada tipo de espacio</h2><p>Escogemos las plantas según la luz, el aire acondicionado y el tiempo que van a estar.</p></div></div>
+    <div class="uses">
+      <article class="use"><div class="ph"><img src="../img/invernadero.jpg" alt="" loading="lazy" width="800" height="533"></div><div class="in"><h3 class="h-display">Eventos y bodas</h3><p>Montajes de un día o fin de semana: palmas, follajes y plantas de flor para ambientar.</p><ul class="ticks"><li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Entrega y recogida</li><li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Macetas decorativas</li></ul></div></article>
+      <article class="use"><div class="ph"><img src="../img/monsteraint.jpg" alt="" loading="lazy" width="800" height="1200"></div><div class="in"><h3 class="h-display">Hoteles y restaurantes</h3><p>Plantas que aguantan la brisa y el salitre para lobbies, terrazas y zonas de piscina.</p><ul class="ticks"><li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Plan mensual</li><li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Cambio de plantas cansadas</li></ul></div></article>
+      <article class="use"><div class="ph"><img src="../img/estante.jpg" alt="" loading="lazy" width="800" height="533"></div><div class="in"><h3 class="h-display">Oficinas</h3><p>Especies que viven con aire acondicionado y poca luz, con riego y limpieza incluidos.</p><ul class="ticks"><li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Visitas de mantenimiento</li><li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Factura a nombre de la empresa</li></ul></div></article>
+    </div>
+  </div></section>
+
+  <section class="blk alt" aria-labelledby="h-how"><div class="wrap">
+    <div class="sec-head"><div><h2 class="h-display" id="h-how">Así funciona</h2><p>Cuatro pasos, sin que tengas que mover una matera.</p></div></div>
+    <ol class="steps-row" style="list-style:none;padding:0;margin:0">
+      <li class="step"><span class="k">1</span><h3>Nos cuentas</h3><p>El tipo de espacio, la fecha y cuántos metros quieres ambientar.</p></li>
+      <li class="step"><span class="k">2</span><h3>Te proponemos</h3><p>Una selección de plantas y macetas con el valor total.</p></li>
+      <li class="step"><span class="k">3</span><h3>Instalamos</h3><p>Llevamos y ubicamos todo el día acordado.</p></li>
+      <li class="step"><span class="k">4</span><h3>Mantenemos</h3><p>Regamos, limpiamos o recogemos según tu plan.</p></li>
+    </ol>
+  </div></section>
+
+  <section class="blk" id="cotizar" aria-labelledby="h-quote"><div class="wrap quote">
+    <div>
+      <h2 class="h-display" id="h-quote">Cotiza tu alquiler</h2>
+      <p class="lead">Completa el formulario y te respondemos por WhatsApp con una propuesta. Si prefieres, escríbenos directo al 302 713 8703.</p>
+      <ul class="ticks"><li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Cartagena y Sincelejo</li><li><svg class="i" aria-hidden="true"><use href="#i-check"/></svg>Respuesta el mismo día hábil</li></ul>
+    </div>
+    <form class="form" id="quote" novalidate>
+      <div class="field"><label for="qn">Nombre <i aria-hidden="true">*</i></label><input id="qn" name="n" autocomplete="name" required aria-describedby="e-qn"><p class="err" id="e-qn"></p></div>
+      <div class="field"><label for="qt">Celular <i aria-hidden="true">*</i></label><input id="qt" name="t" type="tel" inputmode="tel" autocomplete="tel" required aria-describedby="e-qt"><p class="err" id="e-qt"></p></div>
+      <div class="field"><label for="qk">Tipo de espacio</label><select id="qk" name="k"><option>Evento o boda</option><option>Hotel o restaurante</option><option>Oficina</option><option>Otro</option></select></div>
+      <div class="field"><label for="qc">Ciudad</label><select id="qc" name="c"><option>Cartagena</option><option>Sincelejo</option></select></div>
+      <div class="field full"><label for="qd">Fecha o desde cuándo</label><input id="qd" name="d" type="date"></div>
+      <div class="field full"><label for="qm">Cuéntanos del espacio</label><textarea id="qm" name="m" placeholder="Ej.: terraza de 40 m² con sol de tarde, evento para 120 personas"></textarea></div>
+      <button class="btn btn-oro" type="submit"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>Enviar por WhatsApp</button>
+      <p class="fine" id="qOut" aria-live="polite">Se abrirá WhatsApp con tu mensaje listo para enviar.</p>
+    </form>
+  </div></section>
+</main>
+<script src="assets/organik.js"></script>
+<script>
+(function(){
+O.shell("alquiler");
+const {$,WA}=O;
+const f=$("#quote");
+function check(el,msg){const bad=!el.value.trim()||(el.type==="tel"&&el.value.replace(/\D/g,"").length<10);el.setAttribute("aria-invalid",bad);$("#e-"+el.id).textContent=bad?msg:"";return !bad}
+$("#qn").addEventListener("blur",e=>check(e.target,"Escribe tu nombre."));
+$("#qt").addEventListener("blur",e=>check(e.target,"Escribe un celular de 10 dígitos, por ejemplo 300 123 4567."));
+f.addEventListener("submit",e=>{
+  e.preventDefault();
+  const ok=[check($("#qn"),"Escribe tu nombre."),check($("#qt"),"Escribe un celular de 10 dígitos, por ejemplo 300 123 4567.")];
+  if(ok.includes(false)){f.querySelector('[aria-invalid="true"]').focus();return}
+  const d=Object.fromEntries(new FormData(f));
+  const txt=`Hola, quiero cotizar alquiler de plantas.%0A• Nombre: ${d.n}%0A• Celular: ${d.t}%0A• Espacio: ${d.k}%0A• Ciudad: ${d.c}${d.d?"%0A• Fecha: "+d.d:""}${d.m?"%0A• Detalle: "+d.m:""}`;
+  const url=`https://wa.me/${WA}?text=${txt.replace(/ /g,"%20")}`;
+  $("#qOut").innerHTML=`Listo. Si WhatsApp no se abrió, <a href="${url}" target="_blank" rel="noopener" style="text-decoration:underline">toca aquí para enviar el mensaje</a>.`;
+  window.open(url,"_blank","noopener");
+});
+})();
+</script>
+</body>
+</html>

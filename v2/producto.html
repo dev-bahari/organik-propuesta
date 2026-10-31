@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Producto · Vivero Organik</title>
+<meta name="description" content="Ficha de producto de Vivero Organik.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/organik.css">
+</head>
+<body>
+<main id="main">
+  <div class="wrap pdp" id="pdp"></div>
+  <section class="blk alt" aria-labelledby="h-rel"><div class="wrap">
+    <div class="sec-head"><div><h2 class="h-display" id="h-rel">También te puede gustar</h2></div><a class="link-all" id="relAll" href="catalogo.html">Ver más <svg class="i" aria-hidden="true"><use href="#i-arrow"/></svg></a></div>
+    <div class="grid" id="related"></div>
+  </div></section>
+</main>
+<script src="assets/organik.js"></script>
+<script>
+(function(){
+const {P,CATS,LUZ,byId,$,$$,card,fmt,icon,IMG,catName,add,WA}=O;
+const x=byId[new URLSearchParams(location.search).get("id")]||P[0];
+const grp=(CATS.find(c=>c.id===x.c)||{}).group||"plantas";
+O.shell(grp);
+document.title=x.n+" · Vivero Organik";
+const off=x.w?Math.round((1-x.p/x.w)*100):0;
+const imgs=[...new Set([x.a,x.b])];
+const isPlant=grp==="plantas"&&x.water!=="—";
+const specs=isPlant?[["sun","Luz",x.t.map(t=>LUZ[t]).join(" · ")||"Luz indirecta"],["drop","Riego",x.water],["ruler","Tamaño",x.size],["leaf","Cuidado",x.care[1]||x.care[0]]]
+  :[["ruler","Medidas",x.size],["leaf","Detalle",x.care[0]],["check","Incluye",x.care[1]||"—"],["truck","Entrega","Cartagena y Sincelejo"]];
+const grpName={plantas:"Plantas",macetas:"Macetas",abono:"Abono y tierra"}[grp];
+const waText=encodeURIComponent(`Hola, tengo una pregunta sobre: ${x.n}`);
+$("#pdp").innerHTML=`
+  <div class="gallery">
+    <div class="thumbs" role="group" aria-label="Fotos del producto">${imgs.map((im,i)=>`<button type="button" data-img="${im}" aria-pressed="${i===0}" aria-label="Ver foto ${i+1}"><img src="${IMG}${im}.jpg" alt="" width="84" height="84"></button>`).join("")}</div>
+    <div class="stage">${x.out?'<span class="flag out">Agotado</span>':off?`<span class="flag sale">-${off}%</span>`:""}<img id="stageImg" src="${IMG}${imgs[0]}.jpg" alt="${x.n}" width="800" height="800"></div>
+  </div>
+  <div class="info">
+    <nav class="crumb-in" aria-label="Migas de pan"><ol><li><a href="index.html">Inicio</a></li><li><a href="catalogo.html?g=${grp}">${grpName}</a></li><li><a href="catalogo.html?c=${x.c}">${catName(x.c)}</a></li></ol></nav>
+    <h1 class="h-display">${x.n}</h1>
+    <div class="pp"><span class="now price">${fmt(x.p)}</span>${x.w?`<span class="was price">${fmt(x.w)}</span><span class="off">Ahorras ${fmt(x.w-x.p)}</span>`:""}</div>
+    <span class="stock${x.out?" no":""}">${x.out?"Agotado por ahora":"En existencia · listo para enviar"}</span>
+    <p class="lead">${x.d}</p>
+    <div class="specs">${specs.map(([i,k,v])=>`<div class="spec">${icon(i)}<span><small>${k}</small><b>${v}</b></span></div>`).join("")}</div>
+    <div class="buy">
+      <span class="qty"><button type="button" id="qMinus" aria-label="Quitar uno">${icon("minus")}</button><output id="qVal" aria-live="polite">1</output><button type="button" id="qPlus" aria-label="Agregar uno">${icon("plus")}</button></span>
+      ${x.out?`<a class="btn btn-ghost" href="https://wa.me/${WA}?text=${encodeURIComponent("Hola, quiero que me avisen cuando llegue: "+x.n)}" target="_blank" rel="noopener">${icon("chat")}Avísame cuando llegue</a>`
+      :`<button class="btn btn-oro" type="button" id="addBtn">${icon("bag")}Agregar al carrito</button><button class="btn btn-dark" type="button" id="buyNow">Comprar ahora</button>`}
+    </div>
+    <ul class="perks">
+      <li>${icon("truck")}Envío a domicilio en Cartagena y Sincelejo</li>
+      <li>${icon("leaf")}Llega sana o te la cambiamos</li>
+      <li>${icon("chat")}<span>¿Dudas? <a href="https://wa.me/${WA}?text=${waText}" target="_blank" rel="noopener" style="text-decoration:underline;text-underline-offset:3px">Escríbenos por WhatsApp</a></span></li>
+    </ul>
+    <div>
+      <details class="acc" open><summary>Descripción ${icon("plus")}</summary><div class="body"><p>${x.d}</p><p>Tamaño aproximado: ${x.size}. Cada ${isPlant?"planta es única: puede variar un poco en forma y tamaño respecto a la foto":"producto se revisa antes de salir de la sede"}.</p></div></details>
+      ${isPlant?`<details class="acc"><summary>Cuidados ${icon("plus")}</summary><div class="body"><p><b>Luz:</b> ${x.t.map(t=>LUZ[t]).join(", ")||"indirecta"}.</p><p><b>Riego:</b> ${x.water.toLowerCase()}. Revisa que los primeros 2 cm de tierra estén secos antes de regar.</p><p><b>Abono:</b> una cucharada de abono orgánico cada mes.</p></div></details>`:""}
+      <details class="acc"><summary>Envíos y cambios ${icon("plus")}</summary><div class="body"><p>Entregamos en Cartagena y Sincelejo. El costo y la fecha se calculan al pagar.</p><p>Si tu planta llega en mal estado, escríbenos dentro de las 48 horas y te la cambiamos.</p></div></details>
+    </div>
+  </div>`;
+/* gallery */
+$$("[data-img]").forEach(b=>b.addEventListener("click",()=>{$$("[data-img]").forEach(o=>o.setAttribute("aria-pressed",o===b));$("#stageImg").src=IMG+b.dataset.img+".jpg"}));
+/* qty + buy */
+let q=1;const qv=$("#qVal");
+$("#qMinus").onclick=()=>{q=Math.max(1,q-1);qv.textContent=q};
+$("#qPlus").onclick=()=>{q=Math.min(20,q+1);qv.textContent=q};
+if(!x.out){
+  $("#addBtn").onclick=()=>{add(x.id,q);O.toast(`${q} × ${x.n} agregado al carrito`)};
+  $("#buyNow").onclick=()=>{add(x.id,q,false);O.toast("En la tienda real, aquí se abre el pago seguro de Shopify")};
+}
+/* related */
+const rel=P.filter(o=>o.id!==x.id&&o.c===x.c).concat(P.filter(o=>o.id!==x.id&&o.c!==x.c&&(CATS.find(c=>c.id===o.c)||{}).group===grp)).slice(0,4);
+$("#related").innerHTML=rel.map(card).join("");
+$("#relAll").href="catalogo.html?c="+x.c;
+})();
+</script>
+</body>
+</html>

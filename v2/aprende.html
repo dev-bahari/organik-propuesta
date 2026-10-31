@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Aprende · Vivero Organik</title>
+<meta name="description" content="Guías cortas para cuidar tus plantas en el clima de la costa.">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Hanken+Grotesk:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="assets/organik.css">
+</head>
+<body>
+<main id="main">
+  <section class="band" aria-labelledby="h-page">
+    <img src="../img/helecho.jpg" alt="" width="800" height="1000">
+    <div class="wrap">
+      <nav class="crumbs" aria-label="Migas de pan"><ol><li><a href="index.html">Inicio</a></li><li aria-current="page">Aprende</li></ol></nav>
+      <h1 class="h-display" id="h-page">Aprende a cuidarlas</h1>
+      <p>Guías cortas, escritas para el calor, la humedad y la brisa de la costa.</p>
+    </div>
+  </section>
+  <section class="blk" aria-label="Artículos"><div class="wrap">
+    <article class="feature" id="featured"></article>
+    <div class="sec-head" style="margin-bottom:28px">
+      <h2 class="h-display" style="font-size:clamp(30px,3.4vw,42px)">Todos los artículos</h2>
+      <div class="tabs" role="group" aria-label="Filtrar por tema" id="topics"></div>
+    </div>
+    <div class="posts three" id="list" aria-live="polite"></div>
+  </div></section>
+  <section class="blk alt" aria-labelledby="h-help"><div class="wrap">
+    <div class="banner">
+      <div class="pic"><img src="../img/siembra.jpg" alt="Manos sembrando plántulas" loading="lazy" width="800" height="533"></div>
+      <div class="txt">
+        <h2 class="h-display" id="h-help">¿Tu planta se ve triste?</h2>
+        <p>Mándanos una foto por WhatsApp y te decimos qué le pasa y cómo salvarla.</p>
+        <div><a class="btn btn-oro" href="https://wa.me/573027138703?text=Hola%2C%20mi%20planta%20se%20ve%20triste%2C%20les%20mando%20una%20foto" target="_blank" rel="noopener"><svg class="i" aria-hidden="true"><use href="#i-chat"/></svg>Enviar foto</a></div>
+      </div>
+    </div>
+  </div></section>
+</main>
+<script src="assets/organik.js"></script>
+<script>
+(function(){
+O.shell("aprende");
+const {POSTS,$,$$,IMG,icon}=O;
+const f=POSTS[3];
+$("#featured").innerHTML=`<div class="ph"><img src="${IMG}${f.img}.jpg" alt="" width="800" height="550"></div>
+  <div><div class="meta-line"><span class="tg">${f.tag}</span><span>${f.min} min de lectura</span></div>
+  <h2 class="h-display" id="${f.id}">${f.t}</h2><p>${f.ex}</p><a class="btn btn-dark" href="#${f.id}">Leer artículo ${icon("arrow")}</a></div>`;
+const tags=["Todos",...new Set(POSTS.map(p=>p.tag))];
+$("#topics").innerHTML=tags.map((t,i)=>`<button class="tab" type="button" aria-pressed="${i===0}" data-topic="${t}">${t}</button>`).join("");
+function list(t){
+  $$("[data-topic]").forEach(b=>{b.setAttribute("aria-pressed",b.dataset.topic===t)});
+  $("#list").innerHTML=POSTS.filter(p=>p!==f&&(t==="Todos"||p.tag===t)).map(p=>`<article class="post" id="${p.id}"><div class="ph"><img src="${IMG}${p.img}.jpg" alt="" loading="lazy" width="600" height="450"></div><div class="meta-line"><span class="tg">${p.tag}</span><span>${p.min} min</span></div><h3><a href="#${p.id}">${p.t}</a></h3><p class="ex">${p.ex}</p></article>`).join("")||`<p>No hay artículos de este tema todavía.</p>`;
+}
+$("#topics").addEventListener("click",e=>{const b=e.target.closest("[data-topic]");if(b)list(b.dataset.topic)});
+list("Todos");
+})();
+</script>
+</body>
+</html>
