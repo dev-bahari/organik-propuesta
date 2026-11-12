@@ -177,7 +177,7 @@ function renderCart(){
   $("#cartFoot").hidden=!ids.length;
   $("#subtotal").textContent=fmt(sub);
   const left=FREE_SHIP-sub;
-  $("#shipMsg").innerHTML=(left>0?`Te faltan <b class="price">${fmt(left)}</b> para envío gratis`:`<b>Tienes envío gratis</b>`)+`<div class="bar"><i style="width:${Math.min(100,sub/FREE_SHIP*100)}%"></i></div>`;
+  $("#shipMsg").innerHTML=(left>0?`Te faltan <b class="price">${fmt(left)}</b> para envío gratis`:`<b>Tienes envío gratis</b>`)+`<div class="bar"><i style="transform:scaleX(${Math.min(1,sub/FREE_SHIP)})"></i></div>`;
   save();
 }
 function bump(){const b=$("#cartCount");b.classList.remove("bump");void b.offsetWidth;b.classList.add("bump")}

@@ -433,7 +433,7 @@ footer ul a:hover{color:var(--oro)}
 .d-foot{border-top:1px solid var(--line);padding:20px 24px;display:grid;gap:12px}
 .ship{font-size:14px;color:var(--muted)}
 .ship .bar{height:6px;background:var(--niebla);border-radius:999px;overflow:hidden;margin-top:8px}
-.ship .bar i{display:block;height:100%;background:var(--brote);transition:width .5s var(--ease)}
+.ship .bar i{display:block;height:100%;width:100%;background:var(--brote);transform-origin:left;transition:transform .5s var(--ease)}
 .sub{display:flex;justify-content:space-between;align-items:baseline;font-size:15px}
 .sub b{font-size:24px;font-variant-numeric:tabular-nums}
 .d-foot .btn{width:100%}
